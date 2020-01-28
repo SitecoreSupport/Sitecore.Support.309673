@@ -156,7 +156,14 @@ namespace Sitecore.Support.Commerce.XA.Foundation.Connect.Managers
             if (isLoggedIn)
             {
                 var anonymousVisitorCart = this.CartManager.GetCurrentCart(visitorContext, storefront).Result;
-                Tracker.Current.CheckForNull().Session.IdentifyAs(Sitecore.Commerce.Constants.ContactSource, userName);
+                try
+                {
+                    Tracker.Current.CheckForNull().Session.IdentifyAs(Sitecore.Commerce.Constants.ContactSource, userName);
+                }
+                catch (Sitecore.Analytics.DataAccess.XdbUnavailableException e)
+                {
+                    Sitecore.Diagnostics.Log.Warn("The Storefront has detected that xDB is no longer available during the login.  This has not stopped the processing and the user was allowed to continue.", e, this);
+                }
 
                 // TODO: Check if valid in SC 9.
                 // Tracker.Current.Session.Identify(userName);
@@ -210,6 +217,21 @@ namespace Sitecore.Support.Commerce.XA.Foundation.Connect.Managers
                 result = new CreateUserResult { Success = false };
                 result.SystemMessages.Add(new SystemMessage { Message = this.ErrorCodeToString(storefrontContext, e.StatusCode) });
             }
+
+            // This scenario happens when xDB goes down while the site is running.  The user does get created so we simply get the user and return
+            // it as part of this call.
+            catch (XConnect.XdbCollectionUnavailableException e)
+            {
+                Sitecore.Diagnostics.Log.Warn("The Storefront has detected that xDB is no longer available during the user creation.  This has not stopped the processing and the user was allowed to continue.", e, this);
+                result = new CreateUserResult { Success = true };
+
+                var getUserResult = this.GetUser(userName);
+                if (getUserResult.ServiceProviderResult.Success)
+                {
+                    result = new CreateUserResult() { Success = true, CommerceUser = getUserResult.Result };
+                }
+            }
+
             catch (Exception)
             {
                 result = new CreateUserResult { Success = false };

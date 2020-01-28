@@ -46,6 +46,10 @@
       <HintPath>..\packages\SC.Sitecore.Analytics.9.0.2\lib\Sitecore.Analytics.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Sitecore.Analytics.DataAccess, Version=11.18.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SC.Sitecore.Analytics.DataAccess.9.0.2\lib\Sitecore.Analytics.DataAccess.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Sitecore.Analytics.Model, Version=11.40.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SC.Sitecore.Analytics.Model.9.0.2\lib\Sitecore.Analytics.Model.dll</HintPath>
       <Private>False</Private>
@@ -92,6 +96,10 @@
     </Reference>
     <Reference Include="Sitecore.Commerce.Engine.Connect">
       <HintPath>..\packages\COM.Sitecore.Commerce.Engine.Connect.9.0.2\lib\Sitecore.Commerce.Engine.Connect.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Sitecore.XConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SC.Sitecore.XConnect.9.0.2\lib\Sitecore.XConnect.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

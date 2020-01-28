@@ -61,7 +61,14 @@ namespace Sitecore.Support.Commerce.Contacts
 
             if (string.IsNullOrEmpty(user))
             {
-                user = Sitecore.Data.ID.Parse(contact.ContactId).ToString();
+                if (Sitecore.Context.User.IsAuthenticated && !Sitecore.Context.User.IsAdministrator)
+                {
+                    user = Sitecore.Context.User.Name;
+                }
+                else
+                {
+                    user = Sitecore.Data.ID.Parse(contact.ContactId).ToString();
+                }
             }
 
             return user;
